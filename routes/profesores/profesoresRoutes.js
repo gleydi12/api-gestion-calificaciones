@@ -8,8 +8,12 @@ import {
     eliminarProfesor,
     listarMateriasPorProfesor
 } from '../../controllers/profesores/profesoresControllers.js';
+import verifyToken from "../middleware.js";
 
 const profesoresRouter = Router();
+
+//proteger las rutas de profesores
+profesoresRouter.use(verifyToken);
 
 profesoresRouter.get('/', listarTodosProfesores);
 profesoresRouter.get('/:id', listarProfesoresPorId);
