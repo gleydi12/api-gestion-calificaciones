@@ -22,6 +22,7 @@ import MateriasRouter from './routes/materias/materiasRoutes.js';
 // Importar las rutas
 import HorariosRouter from './routes/horarios/horariosRoutes.js'; 
 import authRouter from './routes/auth/authRoutes.js';
+import StatsRoutes from "./routes/stats/statsRoutes.js";
 
 //Crear la app de express
 const app = express();
@@ -56,6 +57,9 @@ app.use('/auth', authRouter); // Rutas de login
 
 //Usar las rutas
 app.use('/horarios', HorariosRouter); // horarios
+
+// Rutas para extraer estadisticas desde la base de datos
+app.use('/estadisticas', StatsRoutes);
 
 //Levantar el servidor en el puerto 3000
 app.listen(port, () => {
