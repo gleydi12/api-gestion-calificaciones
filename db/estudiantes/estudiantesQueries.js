@@ -3,21 +3,40 @@ import config from '../../config.js';
 /**
  * Carga la lista de los estudiantes (en este ejemplo solo 3 estudiantes)
  */
-const listarTodosEstudiantesQuery = () => {
-    // Una promesa es una forma de que siempre se devuelva un resultado al quien llama (sea error o éxito)
-    // Si la consulta no genera error, entonces resuelve/cumple la promesa con el resultado
-    // Si hay algun error entonces rechaza la consulta e informa la razón 
+const listarTodosEstudiantesQuery = (req) => {
+    // The req has page, per_page, and search query params
+    const { page, per_page, search } = req.query;
+    // The page number is calculated by multiplying the page number by the number of items per page
+    const offset = (page - 1) * per_page;
+    // The query is built based on the search query param
+    const sql = search ? `
+SELECT id, email, nombres, apellidos, celular, direccion, especialidad, tipo 
+FROM usuarios 
+WHERE tipo = 3 AND (nombres LIKE '%${search}%' OR apellidos LIKE '%${search}%' OR celular LIKE '%${search}%' OR direccion LIKE '%${search}%' OR especialidad LIKE '%${search}%') LIMIT ${per_page} 
+OFFSET ${offset}` : `SELECT id, email, nombres, apellidos, celular, direccion, especialidad, tipo  FROM usuarios WHERE tipo = 3 LIMIT ${per_page} OFFSET ${offset}`;
+
     return new Promise((resolve, reject) => {
-        config.query('SELECT * FROM estudiantes LIMIT 0,3', (err, filas) => {
-            // Si genera error, mostramos en la consola que es lo que falla
+        let total = 0
+        // Count all the items in the database avoiding the limit and offset and only using the where tipo = 3
+        config.query('SELECT COUNT(*) AS total FROM usuarios WHERE tipo = 3', (err, total) => {
+            // Guardar el total de items en la base de datos
+            total = total[0].total;
             if (err) {
                 console.log(err);
                 reject(err);
             } else {
-                // Si no hay error, devolvemos los datos de la tabla 
-                resolve(filas);
+                // The total number of items is the total number of items in the database
+                config.query(sql, (err, filas) => {
+                    if (err) {
+                        console.log(err);
+                        reject(err);
+                    } else {
+                        const current_page = Number(page);
+                        resolve({ total, current_page, data: filas });
+                    }
+                });
             }
-        });
+        })
     });
 };
 
@@ -26,7 +45,7 @@ const listarTodosEstudiantesQuery = () => {
  */
 const listarEstudianteIdQuery = (id) => {
     return new Promise((resolve, reject) => {
-        config.query('SELECT * FROM estudiantes WHERE id = ? LIMIT 1', [id], (err, filas) => {
+        config.query('SELECT id, email, nombres, apellidos, celular, direccion, especialidad, tipo  FROM usuarios WHERE tipo = 3 AND id = ? LIMIT 1', [id], (err, filas) => {
             if (err) {
                 console.log(err);
                 reject(err);
@@ -41,10 +60,10 @@ const listarEstudianteIdQuery = (id) => {
  * Guardar un nuevo estudiante
  */
 const crearEstudianteQuery = async (estudiante) => {
-    const { nombre, apellido, telefono, email, direccion } = estudiante;
+    const { nombres, apellidos, celular, email, direccion, especialidad} = estudiante;
     return new Promise((resolve, reject) => {
-        const sql = 'INSERT INTO estudiantes (nombre, apellido, telefono, email, direccion) VALUES (?, ?, ?, ?, ?)';
-        config.query(sql, [nombre, apellido, telefono, email, direccion], (err, resultado) => {
+        const sql = 'INSERT INTO usuarios (nombres, apellidos, celular, email, direccion,especialidad) VALUES (?, ?, ?, ?, ?)';
+        config.query(sql, [nombres, apellidos, celular, email, direccion, especialidad], (err, resultado) => {
             if (err) {
                 reject(err);
             } else {
@@ -58,10 +77,10 @@ const crearEstudianteQuery = async (estudiante) => {
  * Actualizar un estudiante por su ID
  */
 const actualizarEstudianteQuery = (id, estudiante) => {
-    const { nombre, apellido, telefono, email, direccion} = estudiante;
+    const { nombres, apellidos, celular, email, direccion, especialidad} = estudiante;
     return new Promise((resolve, reject) => {
-        const sql = 'UPDATE estudiantes SET nombre = ?, apellido = ?, telefono = ?, email =?, direccion = ? WHERE id = ?';
-        config.query(sql, [nombre, apellido, telefono, email, direccion, id], (err, resultado) => {
+        const sql = 'UPDATE estudiantes SET nombres = ?, apellidos = ?, celular = ?, email =?, direccion = ?, espcialidad = ? WHERE id = ?';
+        config.query(sql, [nombres, apellidos, celular, email, direccion, especialidad, id], (err, resultado) => {
             if (err) {
                 reject(err);
             } else {
@@ -76,7 +95,7 @@ const actualizarEstudianteQuery = (id, estudiante) => {
  */
 const eliminarEstudianteQuery = (id) => {
     return new Promise((resolve, reject) => {
-        const sql = 'DELETE FROM estudiantes WHERE id = ?';
+        const sql = 'DELETE FROM usuarios WHERE id = ?';
         config.query(sql, [id], (err, resultado) => {
             if (err) {
                 reject(err);

@@ -3,8 +3,6 @@ import { createConnection } from 'mysql2';
 import dotenv from 'dotenv';
 dotenv.config();
 
-
-
 const config = createConnection({
     host: process.env.DB_HOST,
     user:process.env.DB_USER,

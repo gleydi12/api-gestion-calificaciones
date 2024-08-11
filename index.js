@@ -42,21 +42,21 @@ const port = 3001;
 app.use('/estudiantes', estudiantesRouter); // ESTUDIANTES
 
 //Usar las rutas
-app.use('/profesores', profesoresRouter); // profesores
+//app.use('/profesores', profesoresRouter); // profesores
 
 //Usar las rutas
-app.use('/cursos', cursosRouter); // cursos
+//app.use('/cursos', cursosRouter); // cursos
 
 //Usar las rutas
-app.use('/materias', MateriasRouter); // materias
+//app.use('/materias', MateriasRouter); // materias
 
 //Usar las rutas
-app.use('/calificaciones', calificacionesRouter); // Calificaciones
+//app.use('/calificaciones', calificacionesRouter); // Calificaciones
 
 app.use('/auth', authRouter); // Rutas de login
 
 //Usar las rutas
-app.use('/horarios', HorariosRouter); // horarios
+//app.use('/horarios', HorariosRouter); // horarios
 
 // Rutas para extraer estadisticas desde la base de datos
 app.use('/estadisticas', StatsRoutes);
