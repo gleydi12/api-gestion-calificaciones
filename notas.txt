@@ -1,0 +1,10 @@
+En la API debe revisar que todas las operaciones funcionen
+Crear registros
+Editar campos
+Eliminar registros
+
+Eso no lo he revisado...
+
+
+En todos los CRUDS
+

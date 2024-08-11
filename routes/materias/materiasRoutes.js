@@ -9,8 +9,12 @@ import {
 
     
 } from '../../controllers/materias/materiasControllers.js';
+import verifyToken from '../middleware.js';
 
 const MateriasRouter = Router();
+
+// Proteger estas rutas
+MateriasRouter.use(verifyToken);
 
 MateriasRouter.get('/', listarTodosMaterias);
 MateriasRouter.get('/:id', listarMateriasPorId);

@@ -1,5 +1,4 @@
 import { Router } from 'express';
-import verifyToken from '../middleware.js';
 
 import {
     listarTodosEstudiantes,
@@ -7,7 +6,9 @@ import {
     crearEstudiante,
     actualizarEstudiante,
     eliminarEstudiante,
-} from '../../controllers/estudiantes/estudiantesController.js';
+} 
+from '../../controllers/estudiantes/estudiantesController.js';
+import verifyToken from '../middleware.js';
 
 const estudiantesRouter = Router();
 

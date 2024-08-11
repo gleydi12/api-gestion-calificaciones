@@ -7,8 +7,13 @@ import {
     actualizarCalificaciones,
     eliminarCalificaciones,
 } from '../../controllers/calificaciones/calificacionesController.js';
+import verifyToken from '../middleware.js';
 
 const calificacionesRouter = Router();
+
+// Proteger estas rutas
+calificacionesRouter.use(verifyToken);
+
 
 calificacionesRouter.get('/', listarTodosCalificaciones);
 calificacionesRouter.get('/:id', listarCalificacionesPorId);

@@ -7,8 +7,12 @@ import {
     actualizarCurso,
     eliminarCurso,
 } from '../../controllers/cursos/cursosController.js';
+import verifyToken from '../middleware.js';
 
 const cursosRouter = Router();
+
+// Proteger estas rutas
+cursosRouter.use(verifyToken);
 
 cursosRouter.get('/', listarTodosCursos);
 cursosRouter.get('/:id', listarCursosPorId);

@@ -8,7 +8,7 @@ dotenv.config();
 const loginUser = (data) => {
     const { email, password } = data;
     return new Promise((resolve, reject) => {
-       const sql = 'SELECT id,nombre,email,password FROM usuarios WHERE email = ? LIMIT 1';
+       const sql = 'SELECT id,nombre,email,password,tipo FROM usuarios WHERE email = ? LIMIT 1';
 
        config.query(sql, [email], async (err, filas) => {
            console.log(filas)
@@ -26,7 +26,8 @@ const loginUser = (data) => {
                const token = await jwt.sign({
                    id: usuario.id,
                    email: usuario.email,
-                   nombre: usuario.nombre
+                   nombre: usuario.nombre,
+                   tipo: usuario.tipo //tipo de usuario
                }, process.env.SECRET_TOKEN);
                resolve(token);  
            } else {
@@ -64,7 +65,7 @@ const registerUser = (data) => {
                         // Generate token and return it login the user
                         const token = jwt.sign({
                             id: filas.insertId,
-                            email,
+                            email, tipo: filas.tipo,
                             name
                         }, process.env.SECRET_TOKEN);
 

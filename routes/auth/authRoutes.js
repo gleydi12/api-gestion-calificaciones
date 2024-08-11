@@ -6,7 +6,7 @@ import{
 
 const authRouter = Router();
 
-authRouter.post ('/login', loginController);
-authRouter.post ('/register', registerController);
+authRouter.post ('/login', loginController);//validar a un  usuario
+authRouter.post ('/register', registerController);//almacenar información de usuario en una base de datos
 
 export default authRouter;

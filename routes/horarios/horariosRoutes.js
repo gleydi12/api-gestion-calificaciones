@@ -9,8 +9,12 @@ import {
 
     
 } from '../../controllers/horarios/horariosControllers.js';
+import verifyToken from '../middleware.js';
 
 const HorariosRouter = Router();
+
+// Proteger estas rutas
+HorariosRouter.use(verifyToken);
 
 HorariosRouter.get('/', listarTodosHorarios);
 HorariosRouter.get('/:id', listarHorariosPorId);
