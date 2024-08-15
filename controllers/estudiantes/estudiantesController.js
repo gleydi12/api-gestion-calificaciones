@@ -29,7 +29,6 @@ const listarEstudiantePorId = async (req, res) => {
    * Crear un estudiante
    */
   const crearEstudiante = async (req, res) => {
-    console.log(req.body)
     try {
         const datosEstudiante = req.body;
         const resultado = await crearEstudianteQuery(datosEstudiante);
@@ -48,12 +47,15 @@ const listarEstudiantePorId = async (req, res) => {
         const datosEstudiante = req.body;
         const resultado = await actualizarEstudianteQuery(id, datosEstudiante);
         if (resultado.affectedRows > 0) {
-            res.json({ mensaje: 'estudiante actualizado con éxito', id: id });
+            res.json({status: res.statusCode, mensaje: 'Estudiante actualizado con éxito', id: id });
         } else {
-            res.status(404).json({ mensaje: 'estudiante no encontrado' });
+            res.status(404).json({ mensaje: 'Estudiante no encontrado' });
         }
     } catch (error) {
-        res.status(500).send(error);
+        res.status(500).send({
+            ...error,
+            mensaje: error.sqlMessage
+        });
     }
   };
   
@@ -65,9 +67,9 @@ const listarEstudiantePorId = async (req, res) => {
         const id = req.params.id;
         const resultado = await eliminarEstudianteQuery(id);
         if (resultado.affectedRows > 0) {
-            res.json({ mensaje: 'estudiante eliminado con éxito' });
+            res.json({ mensaje: 'Estudiante eliminado con éxito' });
         } else {
-            res.status(404).json({ mensaje: 'estudiante no encontrado' });
+            res.status(404).json({ mensaje: 'Estudiante no encontrado' });
         }
     } catch (error) {
         res.status(500).json({ mensaje: 'Error al eliminar el estudiante', error: error.message });

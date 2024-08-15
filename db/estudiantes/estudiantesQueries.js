@@ -79,7 +79,7 @@ const crearEstudianteQuery = async (estudiante) => {
 const actualizarEstudianteQuery = (id, estudiante) => {
     const { nombres, apellidos, celular, email, direccion, especialidad} = estudiante;
     return new Promise((resolve, reject) => {
-        const sql = 'UPDATE estudiantes SET nombres = ?, apellidos = ?, celular = ?, email =?, direccion = ?, espcialidad = ? WHERE id = ?';
+        const sql = 'UPDATE usuarios SET nombres = ?, apellidos = ?, celular = ?, email =?, direccion = ?, especialidad = ? WHERE id = ?';
         config.query(sql, [nombres, apellidos, celular, email, direccion, especialidad, id], (err, resultado) => {
             if (err) {
                 reject(err);
