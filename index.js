@@ -61,7 +61,7 @@ app.use('/auth', authRouter); // Rutas de login
 // Rutas para extraer estadisticas desde la base de datos
 app.use('/estadisticas', StatsRoutes);
 
-//Levantar el servidor en el puerto 3000
+//Levantar el servidor en el puerto 3001
 app.listen(port, () => {
     console.log(`Servidor corriendo en el puerto ${port}`);
 });
